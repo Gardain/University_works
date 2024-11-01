@@ -1,5 +1,5 @@
-from Pets import Dog, Cat, Parrot, Rabbit, Fish, Hamster, Turtle, Snake, Horse
-from exceptions import InvalidPetTypeException
+from lab1.Pets import Dog, Cat, Parrot, Rabbit, Fish, Hamster, Turtle, Snake, Horse
+from lab1.exceptions import InvalidPetTypeException
 
 
 # Фабрика для создания объектов питомцев

@@ -1,5 +1,5 @@
-from Serialization.Interface.ISerializer import ISerializer
-from Pets import Pet
+from lab1.serialization.interface.ISerializer import ISerializer
+from lab1.Pets import Pet
 
 
 # Класс для работы с сериализацией через интерфейс (выбор сериализатора)

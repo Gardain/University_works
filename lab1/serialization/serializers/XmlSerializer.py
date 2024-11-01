@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 
-from Serialization.Interface.ISerializer import ISerializer
-from Serialization.PetFactory import PetFactory
+from lab1.serialization.interface.ISerializer import ISerializer
+from lab1.serialization.PetFactory import PetFactory
 
 
 # Сериализация в XML
