@@ -11,8 +11,8 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 
 # Настройки
-API_TOKEN = "ВАШ_ТОКЕН"
-NASA_API_KEY = "ВАШ_КЛЮЧ"
+API_TOKEN = ""
+NASA_API_KEY = ""
 USER_DATA_FILE = "user_data.json"  # Файл для хранения пользовательских данных
 
 # Логирование
@@ -23,8 +23,12 @@ logging.basicConfig(level=logging.INFO)
 def load_user_data():
     if os.path.exists(USER_DATA_FILE):
         with open(USER_DATA_FILE, "r") as file:
-            return json.load(file)
-    return {}
+            try:
+                return json.load(file)  # Попытка загрузить JSON
+            except json.JSONDecodeError:
+                return {}  # Если файл пустой или некорректный
+    return {}  # Если файл не существует
+
 
 
 def save_user_data(data):
@@ -124,12 +128,21 @@ async def nasa_apod(message: Message):
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
-        title = data["title"]
-        explanation = data["explanation"]
-        image_url = data["url"]
-        await message.answer_photo(photo=image_url, caption=f"{title}\n\n{explanation}")
+        title = data.get("title", "Без названия")
+        explanation = data.get("explanation", "Нет описания.")
+        image_url = data.get("url", None)
+
+        # Проверяем длину текста и отправляем изображение
+        caption = f"{title}\n\n{explanation}"
+        if len(caption) > 1024:
+            await message.answer_photo(photo=image_url, caption=f"{title}")
+            await message.answer(f"Описание:\n{explanation}")
+        else:
+            await message.answer_photo(photo=image_url, caption=caption)
     else:
         await message.answer("Не удалось получить картинку дня от NASA. Попробуйте позже.")
+
+
 
 
 # Интересный факт о космосе
